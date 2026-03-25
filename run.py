@@ -276,9 +276,9 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data, default=str).encode('utf-8'))
 
 if __name__ == "__main__":
-    print(f"🚀 SIEM v2.0 binding to {HOST}:{PORT}")
-    print("✅ Brute Force + SQLi + XSS (Deep Scan)")
-    print("✅ Render.com Production Ready")
+    print(f"SIEM v2.0 binding to {HOST}:{PORT}")
+    print("Brute Force + SQLi + XSS (Deep Scan)")
+    print("Render.com Production Ready")
     
     with socketserver.ThreadingTCPServer((HOST, PORT), SIEMHandler) as httpd:
         httpd.timeout = 0.1  # Ultra-fast
