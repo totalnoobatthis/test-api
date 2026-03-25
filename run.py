@@ -166,7 +166,7 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"🚀 SIEM Backend v2.0 - Production Ready!")
+                self.wfile.write(b"SIEM Backend v2.0 - Production Ready!")
             
             elif parsed_path.path.startswith('/api/v1/incidents/'):
                 limit = 50
