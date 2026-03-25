@@ -1,0 +1,784 @@
+[
+  {
+    "timestamp": "2026-03-25T17:24:50.729Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.371571"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.825Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/chunk-24EZLZ4I.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.392228"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.827Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/chunk-T3PSKZ45.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.405731"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.832Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/polyfills.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.420146"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.838Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/chunk-TWZW5B45.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.434388"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.922Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/scripts.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.448107"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.926Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/chunk-LHKS7QUN.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.461210"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.934Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/chunk-4MIYPPGW.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.480421"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.942Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/styles.css",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.494693"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:50.986Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/main.js",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:53.509471"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.096Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/assets/i18n/en.json",
+    "status_code": 304,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.580364"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.148Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-version",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.590867"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.189Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-configuration",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.603807"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.268Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-version",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.619426"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.302Z",
+    "ip": "::ffff:127.0.0.1",
+    "method": "GET",
+    "endpoint": "/assets/public/images/JuiceShop_Logo.png",
+    "status_code": 304,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.636455"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.309Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-configuration",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.647284"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.351Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/media/MaterialIcons-Regular-6R3D3MIQ.woff2",
+    "status_code": 200,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.660792"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.357Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-configuration",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.677451"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.388Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-configuration",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.694267"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.406Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/assets/public/favicon_js.ico",
+    "status_code": 304,
+    "payload": {
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:55.712361"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.422Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/admin/application-configuration",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.771997"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.728Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/languages",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.782369"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:51.948Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/api/Challenges/?name=Score%20Board",
+    "status_code": 200,
+    "payload": {
+      "body": {},
+      "query": {
+        "name": "Score Board"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.791724"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:52.006Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/api/Challenges/?name=Score%20Board",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "name": "Score Board"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.802099"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:55.719Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.813178"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:55.751Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.823469"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:55.779Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test",
+        "password": "test"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.834011"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:56.503Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.843500"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:56.538Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.851994"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:56.552Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test",
+        "password": "test"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:24:58.860824"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:56.892Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:17.983819"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:56.923Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:17.995160"
+  },
+  {
+    "timestamp": "2026-03-25T17:24:56.947Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test",
+        "password": "test"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.006394"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:14.621Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test2",
+        "password": "test"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.016964"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:14.626Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.026680"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:14.653Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.035220"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:14.766Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.042607"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:14.803Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.050172"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:14.864Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test2",
+        "password": "test"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.057464"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:15.712Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:18.066713"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:15.748Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.147965"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:15.765Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test2",
+        "password": "test"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.168538"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:41.472Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test2",
+        "password": "test1"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.191193"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:41.477Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.223432"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:41.504Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.242124"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:44.010Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.260525"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:44.031Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.280417"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:44.047Z",
+    "ip": "::1",
+    "method": "POST",
+    "endpoint": "/rest/user/login",
+    "status_code": 401,
+    "payload": {
+      "body": {
+        "email": "test2",
+        "password": "test2"
+      },
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.299054"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:45.700Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami?fields=email",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {
+        "fields": "email"
+      },
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.321737"
+  },
+  {
+    "timestamp": "2026-03-25T17:26:45.721Z",
+    "ip": "::1",
+    "method": "GET",
+    "endpoint": "/rest/user/whoami",
+    "status_code": 304,
+    "payload": {
+      "body": {},
+      "query": {},
+      "params": {}
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+    "agent_id": "juice-shop-agent",
+    "ingested_at": "2026-03-25T17:26:48.336244"
+  }
+]

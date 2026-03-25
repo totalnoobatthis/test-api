@@ -1,0 +1,46 @@
+[
+  {
+    "id": "bf_24e4ba82",
+    "timestamp": "2026-03-25T17:26:14.864Z",
+    "attack_type": "BRUTE_FORCE",
+    "source_ip": "::1",
+    "target_endpoint": "/rest/user/login",
+    "severity": "HIGH",
+    "details": {
+      "attempt_count": 5
+    }
+  },
+  {
+    "id": "bf_46dadf45",
+    "timestamp": "2026-03-25T17:26:15.765Z",
+    "attack_type": "BRUTE_FORCE",
+    "source_ip": "::1",
+    "target_endpoint": "/rest/user/login",
+    "severity": "HIGH",
+    "details": {
+      "attempt_count": 6
+    }
+  },
+  {
+    "id": "bf_f400d56a",
+    "timestamp": "2026-03-25T17:26:41.472Z",
+    "attack_type": "BRUTE_FORCE",
+    "source_ip": "::1",
+    "target_endpoint": "/rest/user/login",
+    "severity": "HIGH",
+    "details": {
+      "attempt_count": 7
+    }
+  },
+  {
+    "id": "bf_ba00af94",
+    "timestamp": "2026-03-25T17:26:44.047Z",
+    "attack_type": "BRUTE_FORCE",
+    "source_ip": "::1",
+    "target_endpoint": "/rest/user/login",
+    "severity": "HIGH",
+    "details": {
+      "attempt_count": 8
+    }
+  }
+]
