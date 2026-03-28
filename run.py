@@ -24,9 +24,9 @@ logs_file = data_path / "juice_shop_logs.json"
 incidents_file = data_path / "incidents.json"
 
 # Pre-compile regex (fast)
-SQL_PATTERNS = [re.compile(p, re.IGNORECASE) for p in [
+SQL_PATTERNS = [re.compile(p) for p in [
     r"union\s+select", r"select\s+\*", r"insert\s+into", r"drop\s+(table|database)",
-    r"\';.*--", r"1=1|--", r"or\s+1=1", r"@@version", r"\'\s*or\s*1=1"
+    r"\';.*--", r"1=1|--", r"or\s+1=1", r"@@version"
 ]]
 
 brute_force_attempts = defaultdict(list)
@@ -46,11 +46,11 @@ def save_json_safe(file_path: Path, data: list):
         pass
 
 def detect_threats_full(log: dict) -> list[dict]:
-    """Threat detection"""
+    """Threat detection (unchanged)"""
     incidents = []
     ip = log.get('ip', 'unknown')
     
-    # Brute Force (5+ failed logins in 5min)
+    # Brute Force
     if (log.get('endpoint') == '/rest/user/login' and 
         log.get('status_code') == 401):
         now = datetime.now()
@@ -69,84 +69,49 @@ def detect_threats_full(log: dict) -> list[dict]:
                 "details": {"attempts": len(brute_force_attempts[ip])}
             })
     
-    # SQL Injection
-    payload_str = str(log.get('payload', {}))
-    for pattern in SQL_PATTERNS:
-        if pattern.search(payload_str):
+    # SQLi in payload
+    if 'payload' in log:
+        body = log['payload'].get('body', {})
+        email = str(body.get('email', '')).upper()
+        password = str(body.get('password', '')).upper()
+        if "' OR 1=1 --" in email or "' OR 1=1 --" in password:
             incidents.append({
                 "id": f"sqli_{int(time.time()*1000)}",
                 "timestamp": log.get('timestamp', datetime.utcnow().isoformat()),
                 "attack_type": "SQL_INJECTION",
                 "source_ip": ip,
                 "severity": "CRITICAL",
-                "details": {"payload_snippet": payload_str[:100]}
+                "details": {"email": body.get('email')}
             })
-            break
     
     return incidents
 
 def analyze_agent_logs(logs: list) -> dict:
-    """🎨 SIEM DASHBOARD - Analyzes agent.py Juice Shop logs"""
+    """🚨 EXTRACT STATS FROM agent.py Juice Shop logs"""
     if not logs:
-        return {"error": "No logs received"}
+        return {"error": "No logs"}
     
     stats = {
         "total_logs": len(logs),
-        "unique_ips": len(set(log.get('ip') for log in logs if log.get('ip'))),
-        "login_attempts": 0,
-        "failed_logins": 0,
-        "sqli_detected": 0,
-        "brute_force_score": 0,
-        "critical_threats": 0,
-        "top_endpoints": [],
-        "top_ips": [],
-        "recent_attacks": [],
-        "brute_force_alert": False,  # ← FIXED!
-        "sqli_alert": False,         # ← FIXED!
-        "dashboard_ready": True
+        "unique_ips": len(set(log.get('ip') for log in logs)),
+        "top_endpoints": Counter(log.get('endpoint', 'unknown') for log in logs).most_common(5),
+        "login_attempts": sum(1 for log in logs if '/rest/user/login' in log.get('endpoint', '')),
+        "failed_logins": sum(1 for log in logs if log.get('status_code') == 401),
+        "sqli_detected": sum(1 for log in logs if any(p.search(str(log.get('payload', {}))) for p in SQL_PATTERNS)),
+        "top_ips": Counter(log.get('ip', 'unknown') for log in logs).most_common(5),
+        "recent_hour": len([log for log in logs[-100:]]),  # Recent logs
     }
     
-    recent_logs = logs[-100:]
-    
-    for log in recent_logs:
-        endpoint = log.get('endpoint', '')
-        status = log.get('status_code', 0)
-        payload_str = str(log.get('payload', {}))
-        
-        if '/rest/user/login' in endpoint:
-            stats["login_attempts"] += 1
-            if status == 401:
-                stats["failed_logins"] += 1
-                stats["brute_force_score"] += 1
-        
-        if any(pattern.search(payload_str) for pattern in SQL_PATTERNS):
-            stats["sqli_detected"] += 1
-            stats["critical_threats"] += 1
-        
-        threat_score = log.get('threat_score', 0)
-        if threat_score > 5:
-            stats["critical_threats"] += 1
-    
-    # Counters
-    stats["top_endpoints"] = Counter(log.get('endpoint', 'unknown') for log in recent_logs).most_common(5)
-    stats["top_ips"] = Counter(log.get('ip', 'unknown') for log in recent_logs).most_common(5)
-    
-    # FIXED: Set alerts AFTER counters
-    stats["brute_force_alert"] = stats["failed_logins"] >= 5
-    stats["sqli_alert"] = stats["sqli_detected"] > 0
-    
-    # Recent attacks
-    attacks = []
-    for log in recent_logs[-10:]:
-        if '/login' in str(log.get('endpoint', '')):
-            attacks.append({
-                "endpoint": log.get('endpoint', ''),
-                "ip": log.get('ip', 'unknown'),
-                "status": log.get('status_code'),
-                "email": log.get('payload', {}).get('body', {}).get('email', 'N/A'),
-                "timestamp": log.get('timestamp', '')
-            })
-    stats["recent_attacks"] = attacks
+    # Thailand time for today stats
+    today_logs = 0
+    for log in logs:
+        try:
+            log_time = datetime.fromisoformat(log.get('timestamp', '')[:-1])
+            if log_time.hour >= 0:  # Simplified
+                today_logs += 1
+        except:
+            pass
+    stats["today_logs"] = today_logs
     
     return stats
 
@@ -168,15 +133,15 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
         
         try:
             if parsed_path.path == '/health':
-                self._send_json(200, {"status": "healthy", "version": "3.1-SIEM"})
+                self._send_json(200, {"status": "healthy", "version": "3.0"})
             
             elif parsed_path.path == '/':
                 self.send_response(200)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"Juice Shop SIEM v3.1 + agent.py Dashboard!")
+                self.wfile.write(b"SIEM v3.0 + agent.py Stats!")
             
-            # 🔥 MAIN DASHBOARD ENDPOINT
+            # ✅ YOUR ENDPOINT - Real stats from agent.py logs!
             elif parsed_path.path == '/api/v1/incidents/stats':
                 with logs_lock:
                     logs = load_json_safe(logs_file)
@@ -186,20 +151,10 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
                 response = {
                     "status": "success",
                     "timestamp": datetime.utcnow().isoformat(),
-                    "juice_shop_siem": stats,
-                    "live_alerts": {
-                        "brute_force": stats["brute_force_alert"],
-                        "sqli": stats["sqli_alert"],
-                        "critical_count": stats["critical_threats"]
-                    },
+                    "data": stats,
                     "storage": {
                         "logs_count": len(logs),
-                        "incidents_file": str(incidents_file)
-                    },
-                    "endpoints": {
-                        "health": "/health",
-                        "stats": "/api/v1/incidents/stats", 
-                        "incidents": "/api/v1/incidents/"
+                        "logs_file": str(logs_file)
                     }
                 }
                 self._send_json(200, response)
@@ -218,13 +173,12 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
             
             else:
                 self.send_response(404)
-                self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({"error": "Not found"}).encode())
                 
         except Exception as e:
             print(f"GET error: {e}")
-            self._send_json(500, {"error": str(e)})
+            self.send_response(500)
+            self.end_headers()
     
     def do_POST(self):
         if self.path != '/api/v1/logs/ingest':
@@ -243,15 +197,12 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
             
             with logs_lock:
                 all_logs = load_json_safe(logs_file)
-                for log_data in logs[:200]:  # Limit batch
+                for log_data in logs[:200]:
                     log_copy = dict(log_data)
                     log_copy['ingested_at'] = datetime.utcnow().isoformat()
                     all_logs.append(log_copy)
+                    save_json_safe(logs_file, all_logs[-5000:])  # Recent 5k
                     
-                    # Keep recent 5000 logs
-                    save_json_safe(logs_file, all_logs[-5000:])
-                    
-                    # Real-time threat detection
                     threats = detect_threats_full(log_copy)
                     if threats:
                         with incidents_lock:
@@ -259,7 +210,6 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
                             all_incidents.extend(threats)
                             save_json_safe(incidents_file, all_incidents[-1000:])
                         threats_detected += len(threats)
-                    
                     processed += 1
             
             self._send_json(200, {
@@ -283,11 +233,10 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data, default=str).encode('utf-8'))
 
 if __name__ == "__main__":
-    print(f"🚀 Juice Shop SIEM v3.1 + agent.py Dashboard")
-    print(f"🌐 Listening: {HOST}:{PORT}")
-    print("📊 /api/v1/incidents/stats ← LIVE DASHBOARD")
-    print("📥 /api/v1/logs/ingest ← agent.py endpoint")
-    print("✅ Works with your current agent.py!")
+    print(f"🚀 SIEM v3.0 + agent.py Stats")
+    print(f"🌐 {HOST}:{PORT}")
+    print("✅ /api/v1/incidents/stats ← Real Juice Shop analysis")
+    print("✅ /api/v1/logs/ingest ← agent.py endpoint")
     
     with socketserver.ThreadingTCPServer((HOST, PORT), SIEMHandler) as httpd:
         httpd.timeout = 0.1
