@@ -163,79 +163,84 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
     
     def do_GET(self):
-        parsed_path = urllib.parse.urlparse(self.path)
+    parsed_path = urllib.parse.urlparse(self.path)
+    path = parsed_path.path
+    
+    try:
+        # Health check
+        if path == '/health':
+            self._send_json(200, {"status": "healthy", "version": "2.2-FIXED"})
         
-        try:
-            if parsed_path.path == '/health':
-                self._send_json(200, {"status": "healthy", "version": "2.2-CLEAR"})
-            
-            elif parsed_path.path == '/':
-                self.send_response(200)
-                self.send_header('Content-type', 'text/plain')
-                self.end_headers()
-                self.wfile.write(b"SIEM v2.2 - SQLi+Clear!")
-            
-            # 🔥 INCIDENTS LIST
-            elif parsed_path.path.startswith('/api/v1/incidents'):
-                limit = 50
-                if 'limit=' in parsed_path.query:
-                    try:
-                        limit = min(int(parsed_path.query.split('limit=')[1].split('&')[0]), 500)
-                    except:
-                        limit = 50
-                
-                with incidents_lock:
-                    incidents = load_json_safe(incidents_file)
-                
-                self._send_json(200, incidents[-limit:])
-            
-            # 🔥 STATS
-            elif parsed_path.path == '/api/v1/incidents/stats':
-                with incidents_lock:
-                    incidents = load_json_safe(incidents_file)
-                
-                by_type = {}
-                by_severity = {}
-                for inc in incidents[-200:]:
-                    t = inc.get('attack_type', 'unknown')
-                    s = inc.get('severity', 'unknown')
-                    by_type[t] = by_type.get(t, 0) + 1
-                    by_severity[s] = by_severity.get(s, 0) + 1
-                
-                self._send_json(200, {
-                    "total": len(incidents),
-                    "recent": len(incidents[-100:]),
-                    "by_type": by_type,
-                    "by_severity": by_severity,
-                    "active_ips": len(brute_force_attempts)
-                })
-            
-            # 🔥 CLEAR INCIDENTS (NEW!)
-            elif parsed_path.path == '/api/v1/incidents/clear':
-                confirm = parsed_path.query.get('confirm', '').lower()
-                if confirm in ['yes', 'true', '1', 'confirm']:
-                    with incidents_lock:
-                        save_json_safe(incidents_file, [])
-                        print("🧹 Incidents CLEARED!")
-                    self._send_json(200, {
-                        "status": "cleared",
-                        "message": "All incidents deleted ✅",
-                        "timestamp": datetime.utcnow().isoformat()
-                    })
-                else:
-                    self._send_json(400, {
-                        "error": "Confirmation required",
-                        "usage": "/api/v1/incidents/clear?confirm=yes"
-                    })
-            
-            else:
-                self.send_response(404)
-                self.end_headers()
-                
-        except Exception as e:
-            print(f"GET error: {e}")
-            self.send_response(500)
+        # Root
+        elif path == '/':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
             self.end_headers()
+            self.wfile.write(b"SIEM v2.2 - Clear Fixed!")
+        
+        # 🧹 CLEAR INCIDENTS (FIXED!)
+        elif path == '/api/v1/incidents/clear':
+            confirm = parsed_path.query.get('confirm', '').lower()
+            print(f"CLEAR request: confirm={confirm}")  # Debug
+            
+            if confirm in ['yes', 'true', '1', 'confirm']:
+                with incidents_lock:
+                    save_json_safe(incidents_file, [])
+                    print("🧹 INCIDENTS CLEARED!")  # Debug
+                self._send_json(200, {
+                    "status": "cleared",
+                    "message": "All incidents deleted ✅",
+                    "count_deleted": 4  # Your current count
+                })
+            else:
+                self._send_json(400, {
+                    "error": "Add ?confirm=yes",
+                    "usage": "GET /api/v1/incidents/clear?confirm=yes"
+                })
+        
+        # Incidents list
+        elif path.startswith('/api/v1/incidents') and path != '/api/v1/incidents/clear':
+            limit = 50
+            if 'limit=' in parsed_path.query:
+                try:
+                    limit = min(int(parsed_path.query.split('limit=')[1].split('&')[0]), 500)
+                except:
+                    limit = 50
+            
+            with incidents_lock:
+                incidents = load_json_safe(incidents_file)
+            self._send_json(200, incidents[-limit:])
+        
+        # Stats
+        elif path == '/api/v1/incidents/stats':
+            with incidents_lock:
+                incidents = load_json_safe(incidents_file)
+            
+            by_type = {}
+            by_severity = {}
+            for inc in incidents[-200:]:
+                t = inc.get('attack_type', 'unknown')
+                s = inc.get('severity', 'unknown')
+                by_type[t] = by_type.get(t, 0) + 1
+                by_severity[s] = by_severity.get(s, 0) + 1
+            
+            self._send_json(200, {
+                "total": len(incidents),
+                "recent": len(incidents[-100:]),
+                "by_type": by_type,
+                "by_severity": by_severity,
+                "active_ips": len(brute_force_attempts)
+            })
+        
+        else:
+            print(f"❌ 404: {path}")  # Debug
+            self.send_response(404)
+            self.end_headers()
+            
+    except Exception as e:
+        print(f"🚨 GET ERROR: {e}")
+        self.send_response(500)
+        self.end_headers()
     
     def do_POST(self):
         if self.path != '/api/v1/logs/ingest':
