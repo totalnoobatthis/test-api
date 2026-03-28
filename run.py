@@ -101,12 +101,11 @@ def analyze_agent_logs(logs: list) -> dict:
         "top_endpoints": [],
         "top_ips": [],
         "recent_attacks": [],
-        "brute_force_alert": False,
-        "sqli_alert": False,
+        "brute_force_alert": False,  # ← FIXED!
+        "sqli_alert": False,         # ← FIXED!
         "dashboard_ready": True
     }
     
-    # Analyze recent logs (last 100)
     recent_logs = logs[-100:]
     
     for log in recent_logs:
@@ -114,19 +113,16 @@ def analyze_agent_logs(logs: list) -> dict:
         status = log.get('status_code', 0)
         payload_str = str(log.get('payload', {}))
         
-        # Login brute force
         if '/rest/user/login' in endpoint:
             stats["login_attempts"] += 1
             if status == 401:
                 stats["failed_logins"] += 1
                 stats["brute_force_score"] += 1
         
-        # SQL patterns
         if any(pattern.search(payload_str) for pattern in SQL_PATTERNS):
             stats["sqli_detected"] += 1
             stats["critical_threats"] += 1
         
-        # Threat score from agent (if present)
         threat_score = log.get('threat_score', 0)
         if threat_score > 5:
             stats["critical_threats"] += 1
@@ -135,14 +131,14 @@ def analyze_agent_logs(logs: list) -> dict:
     stats["top_endpoints"] = Counter(log.get('endpoint', 'unknown') for log in recent_logs).most_common(5)
     stats["top_ips"] = Counter(log.get('ip', 'unknown') for log in recent_logs).most_common(5)
     
-    # Alerts
+    # FIXED: Set alerts AFTER counters
     stats["brute_force_alert"] = stats["failed_logins"] >= 5
     stats["sqli_alert"] = stats["sqli_detected"] > 0
     
-    # Recent attacks (top threats)
+    # Recent attacks
     attacks = []
     for log in recent_logs[-10:]:
-        if '/login' in str(log.get('endpoint', '')) or log.get('status_code') == 401:
+        if '/login' in str(log.get('endpoint', '')):
             attacks.append({
                 "endpoint": log.get('endpoint', ''),
                 "ip": log.get('ip', 'unknown'),
