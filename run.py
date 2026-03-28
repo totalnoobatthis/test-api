@@ -178,7 +178,7 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"🚀 Juice Shop SIEM v3.1 + agent.py Dashboard!")
+                self.wfile.write(b"Juice Shop SIEM v3.1 + agent.py Dashboard!")
             
             # 🔥 MAIN DASHBOARD ENDPOINT
             elif parsed_path.path == '/api/v1/incidents/stats':
