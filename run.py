@@ -87,31 +87,61 @@ def detect_threats_full(log: dict) -> list[dict]:
     return incidents
 
 def analyze_agent_logs(logs: list) -> dict:
-    """🚨 EXTRACT STATS FROM agent.py Juice Shop logs"""
+    """🎨 DASHBOARD STATS from agent.py enriched logs"""
     if not logs:
         return {"error": "No logs"}
     
+    # Base counters
     stats = {
         "total_logs": len(logs),
-        "unique_ips": len(set(log.get('ip') for log in logs)),
-        "top_endpoints": Counter(log.get('endpoint', 'unknown') for log in logs).most_common(5),
-        "login_attempts": sum(1 for log in logs if '/rest/user/login' in log.get('endpoint', '')),
-        "failed_logins": sum(1 for log in logs if log.get('status_code') == 401),
-        "sqli_detected": sum(1 for log in logs if any(p.search(str(log.get('payload', {}))) for p in SQL_PATTERNS)),
-        "top_ips": Counter(log.get('ip', 'unknown') for log in logs).most_common(5),
-        "recent_hour": len([log for log in logs[-100:]]),  # Recent logs
+        "unique_ips": len(set(log.get('ip') for log in logs if log.get('ip'))),
+        "login_attempts": 0,
+        "failed_logins": 0,
+        "sqli_detected": 0,
+        "brute_force_score": 0,
+        "critical_threats": 0,
+        "top_attackers": [],
+        "recent_attacks": [],
+        "dashboard_ready": True
     }
     
-    # Thailand time for today stats
-    today_logs = 0
-    for log in logs:
-        try:
-            log_time = datetime.fromisoformat(log.get('timestamp', '')[:-1])
-            if log_time.hour >= 0:  # Simplified
-                today_logs += 1
-        except:
-            pass
-    stats["today_logs"] = today_logs
+    # Attack analysis
+    for log in logs[-100:]:  # Recent logs
+        endpoint = log.get('endpoint', '')
+        status = log.get('status_code', 0)
+        threat_score = log.get('threat_score', 0)
+        req_summary = log.get('request_summary', {})
+        
+        # Login stats
+        if '/rest/user/login' in endpoint:
+            stats["login_attempts"] += 1
+            if status == 401:
+                stats["failed_logins"] += 1
+                stats["brute_force_score"] += 1
+        
+        # SQLi detection
+        if threat_score > 5 or 'SQL_INJECTION' in str(log):
+            stats["sqli_detected"] += 1
+            stats["critical_threats"] += 1
+        
+        # Recent attacks (last 10)
+        if threat_score > 0:
+            stats["recent_attacks"].append({
+                "endpoint": endpoint,
+                "ip": log.get('ip'),
+                "status": status,
+                "threat_score": threat_score,
+                "email": req_summary.get('email_attempt', 'N/A'),
+                "timestamp": log.get('timestamp', '')
+            })
+    
+    # Top attackers
+    ip_attempts = Counter(log.get('ip', 'unknown') for log in logs[-50:])
+    stats["top_attackers"] = ip_attempts.most_common(5)
+    
+    # Attack trends
+    stats["brute_force_alert"] = stats["failed_logins"] >= 5
+    stats["sqli_alert"] = stats["sqli_detected"] > 0
     
     return stats
 
