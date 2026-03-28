@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-"""
-SIEM Backend - Render.com Production Ready
-Full threat detection: Brute Force + SQLi + XSS (DEEP SCAN)
-"""
-
 import json
 import http.server
 import socketserver
@@ -31,14 +26,21 @@ data_path.mkdir(exist_ok=True)
 logs_file = data_path / "logs.json"
 incidents_file = data_path / "incidents.json"
 
-# Pre-compile regex (10x faster)
-SQL_PATTERNS = [re.compile(p) for p in [
+# 🔥 FIXED: SQLi Patterns for Juice Shop "' OR 1=1 --"
+SQL_PATTERNS = [re.compile(p, re.IGNORECASE) for p in [
+    # Database attacks
     r"union\s+select", r"select\s+\*", r"insert\s+into", r"drop\s+(table|database)",
-    r"\';.*--", r"1=1|--", r"or\s+1=1", r"@@version", r"benchmark", r"sleep"
+    r"\';\s*--", r"@@version", r"benchmark", r"sleep",
+    # 🔥 JUICE SHOP SQLi (YOUR CASE!)
+    r"1=1", r"\-\-", r"or\s+1=1",
+    r"' or 1=1", r"' or 1=1 --", r"1'\s*or", r"admin'\s*--",
+    r"'\s*or", r";\s*--", r"'\s*or\s*1=1"
 ]]
+
 XSS_PATTERNS = [re.compile(p, re.IGNORECASE) for p in [
     r"<script\b", r"javascript\s*:", r"vbscript\s*:", r"on\w+\s*=", 
-    r"expression\s*\$", r"data\s*:", r"img\s+src\s*=", r"svg\s+onload"
+    r"expression\s*\$", r"data\s*:", r"img\s+src\s*=", r"svg\s+onload",
+    r"alert\s*\$", r"onerror\s*=", r"onload\s*="
 ]]
 
 brute_force_attempts = defaultdict(list)
@@ -55,26 +57,32 @@ def save_json_safe(file_path: Path, data: list):
     except:
         pass
 
-def flatten_payload(obj, path='') -> list[dict]:
-    """DEEP SCAN all nested payload fields"""
+def flatten_payload(obj, path='', log=None) -> list[dict]:
+    """DEEP SCAN nested payload (body.email, body.password, etc.)"""
     threats = []
     if isinstance(obj, dict):
         for k, v in obj.items():
             new_path = f"{path}.{k}" if path else k
-            threats.extend(flatten_payload(v, new_path))
+            threats.extend(flatten_payload(v, new_path, log))
     elif isinstance(obj, (str, list)):
         payload_str = str(obj).lower()
-        # SQL Injection
+        
+        # 🔥 SQL Injection - Matches YOUR "' OR 1=1 --"
         for pattern in SQL_PATTERNS:
             if pattern.search(payload_str):
                 threats.append({
                     "id": f"sqli_{int(time.time()*1000)}",
                     "timestamp": datetime.utcnow().isoformat(),
                     "attack_type": "SQL_INJECTION",
-                    "source_ip": "",
-                    "target_endpoint": "",
+                    "source_ip": log.get('ip', 'unknown') if log else "",
+                    "target_endpoint": log.get('endpoint', '') if log else "",
                     "severity": "CRITICAL",
-                    "details": {"matched": pattern.pattern, "path": path, "payload": str(obj)[:50]}
+                    "details": {
+                        "matched": pattern.pattern, 
+                        "path": path, 
+                        "payload": str(obj)[:100],
+                        "confidence": "HIGH"
+                    }
                 })
                 break  # One SQLi per field
         
@@ -86,19 +94,24 @@ def flatten_payload(obj, path='') -> list[dict]:
                     "id": f"xss_{int(time.time()*1000)}",
                     "timestamp": datetime.utcnow().isoformat(),
                     "attack_type": "XSS",
-                    "source_ip": "",
-                    "target_endpoint": "",
+                    "source_ip": log.get('ip', 'unknown') if log else "",
+                    "target_endpoint": log.get('endpoint', '') if log else "",
                     "severity": "HIGH",
-                    "details": {"matched": pattern.pattern, "path": path, "payload": payload_raw[:50]}
+                    "details": {
+                        "matched": pattern.pattern, 
+                        "path": path, 
+                        "payload": payload_raw[:100]
+                    }
                 })
                 break
     return threats
 
 def detect_threats_full(log: dict) -> list[dict]:
+    """Main threat detection"""
     incidents = []
     ip = log.get('ip', 'unknown')
     
-    # 1. BRUTE FORCE LOGIN
+    # 1. BRUTE FORCE (already working)
     if (log.get('endpoint') == '/rest/user/login' and 
         log.get('status_code') == 401):
         
@@ -112,7 +125,7 @@ def detect_threats_full(log: dict) -> list[dict]:
         if len(brute_force_attempts[ip]) >= 5:
             incidents.append({
                 "id": f"bf_{int(time.time()*1000)}",
-                "timestamp": log.get('timestamp', datetime.utcnow().isoformat()),
+                "timestamp": datetime.utcnow().isoformat(),
                 "attack_type": "BRUTE_FORCE",
                 "source_ip": ip,
                 "target_endpoint": log.get('endpoint', ''),
@@ -123,16 +136,16 @@ def detect_threats_full(log: dict) -> list[dict]:
                 }
             })
     
-    # 2. DEEP PAYLOAD SCAN (body, query, params)
-    if 'payload' in log:
-        incidents.extend(flatten_payload(log['payload']))
+    # 2. 🔥 DEEP PAYLOAD SCAN (FIXED for Juice Shop)
+    payload = log.get('payload', {})
+    incidents.extend(flatten_payload(payload, log=log))
     
     # 3. URL PATH SCAN
-    endpoint = log.get('endpoint', '')
-    if any(p.search(endpoint.lower()) for p in SQL_PATTERNS):
+    endpoint = log.get('endpoint', '').lower()
+    if any(p.search(endpoint) for p in SQL_PATTERNS):
         incidents.append({
             "id": f"url_sqli_{int(time.time()*1000)}",
-            "timestamp": log.get('timestamp', datetime.utcnow().isoformat()),
+            "timestamp": datetime.utcnow().isoformat(),
             "attack_type": "SQL_INJECTION",
             "source_ip": ip,
             "target_endpoint": endpoint,
@@ -160,15 +173,15 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
         
         try:
             if parsed_path.path == '/health':
-                self._send_json(200, {"status": "healthy", "version": "2.0"})
+                self._send_json(200, {"status": "healthy", "version": "2.1-SQLiFixed"})
             
             elif parsed_path.path == '/':
                 self.send_response(200)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"SIEM Backend v2.0 - Production Ready!")
+                self.wfile.write(b"SIEM v2.1 - SQLi Fixed!")
             
-            elif parsed_path.path.startswith('/api/v1/incidents/'):
+            elif parsed_path.path.startswith('/api/v1/incidents'):
                 limit = 50
                 if 'limit=' in parsed_path.query:
                     try:
@@ -187,7 +200,7 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
                 
                 by_type = {}
                 by_severity = {}
-                for inc in incidents[-200:]:  # Recent 200
+                for inc in incidents[-200:]:
                     t = inc.get('attack_type', 'unknown')
                     s = inc.get('severity', 'unknown')
                     by_type[t] = by_type.get(t, 0) + 1
@@ -205,7 +218,8 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
                 
-        except Exception:
+        except Exception as e:
+            print(f"GET Error: {e}")
             self.send_response(500)
             self.end_headers()
     
@@ -229,57 +243,54 @@ class SIEMHandler(http.server.BaseHTTPRequestHandler):
             with logs_lock:
                 all_logs = load_json_safe(logs_file)
             
-            for log_data in logs[:200]:  # Process up to 200 logs/batch
+            for log_data in logs[:200]:
                 try:
-                    log_copy = dict(log_data)  # Deep copy
+                    log_copy = dict(log_data)
                     log_copy['agent_id'] = agent_id
                     log_copy['ingested_at'] = datetime.utcnow().isoformat()
                     
-                    # Store raw log
                     all_logs.append(log_copy)
-                    save_json_safe(logs_file, all_logs[-5000:])  # Keep recent 5k
+                    save_json_safe(logs_file, all_logs[-5000:])
                     
-                    # FULL THREAT DETECTION
+                    # 🔥 FIXED DETECTION
                     threats = detect_threats_full(log_copy)
                     if threats:
+                        print(f"🚨 Threat detected: {len(threats)}")
                         with incidents_lock:
                             all_incidents = load_json_safe(incidents_file)
                             all_incidents.extend(threats)
-                            save_json_safe(incidents_file, all_incidents[-1000:])  # Keep 1k
+                            save_json_safe(incidents_file, all_incidents[-1000:])
                         threats_detected += len(threats)
                     
                     processed += 1
                     
-                except Exception:
-                    pass
+                except Exception as e:
+                    print(f"Log process error: {e}")
             
             response = {
                 "status": "accepted",
                 "processed": processed,
                 "threats_detected": threats_detected,
-                "agent_id": agent_id,
-                "timestamp": datetime.utcnow().isoformat()
+                "agent_id": agent_id
             }
-            
             self._send_json(200, response)
             
         except Exception as e:
+            print(f"POST Error: {e}")
             self._send_json(400, {"error": str(e)})
     
     def _send_json(self, status: int, data: dict):
         self.send_response(status)
         self.send_header('Content-type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, HEAD')
         self.send_header('Access-Control-Allow-Headers', '*')
         self.end_headers()
         self.wfile.write(json.dumps(data, default=str).encode('utf-8'))
 
 if __name__ == "__main__":
-    print(f"SIEM v2.0 binding to {HOST}:{PORT}")
-    print("Brute Force + SQLi + XSS (Deep Scan)")
-    print("Render.com Production Ready")
+    print(f"🚀 SIEM v2.1-SQLiFixed starting on {HOST}:{PORT}")
+    print("✅ Detects: Brute Force, SQLi (' OR 1=1 --'), XSS")
     
     with socketserver.ThreadingTCPServer((HOST, PORT), SIEMHandler) as httpd:
-        httpd.timeout = 0.1  # Ultra-fast
+        httpd.timeout = 0.1
         httpd.serve_forever()
